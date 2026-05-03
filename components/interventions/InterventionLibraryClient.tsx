@@ -10,6 +10,7 @@ import type {
   InterventionFilterMetaResponse,
   InterventionListResponse,
 } from "@/types/api";
+import Link from "next/link";
 
 interface Props {
   initialData: InterventionListResponse;
@@ -99,15 +100,20 @@ export default function InterventionLibraryClient({ initialData, meta }: Props) 
         <div className="space-y-6 lg:col-span-9">
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {data.items.map((item) => (
-              <Card key={item.slug} className="p-4">
-                <div className="text-base font-semibold">{item.title}</div>
-                <p className="mt-2 text-sm text-slate-500">{item.summary}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {item.tags.map((tag) => (
-                    <SmallTag key={tag}>{tag}</SmallTag>
-                  ))}
-                </div>
-              </Card>
+              <Link key={item.slug} href={`/interventions/${item.slug}`} className="block">
+                <Card className="p-4 transition hover:-translate-y-0.5 hover:shadow-lg">
+                  <div className="text-base font-semibold">{item.title}</div>
+                  <p className="mt-2 text-sm text-slate-500">{item.summary}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {item.tags.map((tag) => (
+                      <SmallTag key={tag}>{tag}</SmallTag>
+                    ))}
+                  </div>
+                  {/* <div className="mt-4 text-xs font-medium text-[var(--bc-accent)]">
+                    Open intervention →
+                  </div> */}
+                </Card>
+              </Link>
             ))}
           </div>
         </div>

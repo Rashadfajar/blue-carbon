@@ -10,11 +10,11 @@ export default function FormSection({
   children,
 }: Props) {
   return (
-    <section className="rounded-3xl border bg-white p-5 shadow-sm">
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold">{title}</h2>
+    <section className="bc-card-strong p-5 md:p-6">
+      <div className="mb-4 border-b border-[var(--bc-border)] pb-4">
+        <h2 className="text-lg font-semibold text-[var(--bc-primary)]">{title}</h2>
         {description ? (
-          <p className="mt-1 text-sm text-slate-500">{description}</p>
+          <p className="mt-1 text-sm text-[var(--bc-muted)]">{description}</p>
         ) : null}
       </div>
 

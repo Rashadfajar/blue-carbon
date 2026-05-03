@@ -1,3 +1,8 @@
-export default function Page() {
-  return <div className="p-6 text-sm text-slate-500">Coming soon</div>;
+import { apiFetch } from "@/lib/api";
+import type { InterventionListResponse } from "@/types/api";
+import InterventionListPage from "@/components/admin/interventions/InterventionListPage";
+
+export default async function Page() {
+  const data = await apiFetch<InterventionListResponse>("/interventions");
+  return <InterventionListPage data={data} />;
 }

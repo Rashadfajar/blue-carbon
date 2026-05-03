@@ -7,35 +7,31 @@ import Link from "next/link";
 import type { HomeResponse } from "@/types/api";
 
 export default function HomePage({ data }: { data: HomeResponse }) {
-  const safeQuickLinks = data.quick_links.filter((item) =>
-    ["/", "/interventions", "/map"].includes(item.href)
-  );
-
   return (
     <Shell>
       <div className="grid gap-6 lg:grid-cols-12">
-        <Card className="lg:col-span-9 p-8">
+        <Card className="bc-card-strong bc-section-band lg:col-span-9 p-8 md:p-9">
           <div className="grid gap-6 lg:grid-cols-2 lg:items-center">
             <div>
-              <div className="mb-3 inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                {data.hero.badge}
-              </div>
-              <h1 className="text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
+              <div className="bc-kicker mb-4">{data.hero.badge}</div>
+              <h1 className="text-3xl font-semibold leading-tight tracking-tight text-[var(--bc-primary)] md:text-5xl">
                 {data.hero.title}
               </h1>
-              <p className="mt-4 text-sm leading-6 text-slate-600 md:text-base">
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--bc-muted)] md:text-base">
                 {data.hero.subtitle}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href={data.hero.primary_cta.href}
-                  className="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow"
+                  // className="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow"
+                  className="bc-btn-primary px-5 py-3 text-sm"
                 >
                   {data.hero.primary_cta.label}
                 </Link>
                 <Link
                   href={data.hero.secondary_cta.href}
-                  className="rounded-2xl border px-4 py-2.5 text-sm font-medium text-slate-700"
+                  // className="rounded-2xl border px-4 py-2.5 text-sm font-medium text-slate-700"
+                  className="bc-btn-secondary px-5 py-3 text-sm"
                 >
                   {data.hero.secondary_cta.label}
                 </Link>
@@ -50,32 +46,39 @@ export default function HomePage({ data }: { data: HomeResponse }) {
                   fill
                   className="object-cover"
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
             </div>
           </div>
         </Card>
 
-        <Card className="lg:col-span-3">
+        <Card className="bc-card-strong lg:col-span-3">
           <SectionTitle title="Quick access" subtitle="Primary routes for the first release" />
           <div className="space-y-3">
-            {safeQuickLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-sm"
-              >
-                <span>{item.label}</span>
-                <span className="text-slate-400">→</span>
-              </Link>
-            ))}
+            {data.quick_links?.length ? (
+              data.quick_links.map((item) => (
+                <Link
+                  key={`${item.href}-${item.label}`}
+                  href={item.href}
+                  className="flex items-center justify-between rounded-2xl border border-[var(--bc-border)] bg-white px-4 py-3 text-sm text-[var(--bc-primary)] hover:bg-[rgba(11,60,93,0.04)]"
+                >
+                  <span>{item.label}</span>
+                  <span className="text-slate-400">→</span>
+                </Link>
+              ))
+            ) : (
+              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-400">
+                No quick links configured
+              </div>
+            )}
           </div>
         </Card>
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {data.stats.map((item) => (
-          <Card key={item.label} className="p-4">
+          <Card key={item.label} className="bc-card-strong p-4">
             <div className="text-xs uppercase tracking-wide text-slate-400">{item.label}</div>
             <div className="mt-2 text-lg font-semibold">{item.value}</div>
           </Card>
@@ -115,7 +118,11 @@ export default function HomePage({ data }: { data: HomeResponse }) {
           <SectionTitle title="Featured interventions" subtitle="Prototype card pattern for the intervention library" />
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {data.featured_interventions.map((item) => (
-              <div key={item.slug} className="rounded-3xl border bg-slate-50 p-4">
+              <Link
+                key={item.slug}
+                href={`/interventions/${item.slug}`}
+                className="block rounded-3xl border border-[var(--bc-border)] bg-[linear-gradient(180deg,#ffffff,#f8fcfc)] p-4 transition hover:-translate-y-0.5 hover:shadow-lg"
+              >
                 <div className="text-base font-semibold">{item.title}</div>
                 <p className="mt-2 text-sm text-slate-500">{item.summary}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -123,7 +130,10 @@ export default function HomePage({ data }: { data: HomeResponse }) {
                     <SmallTag key={tag}>{tag}</SmallTag>
                   ))}
                 </div>
-              </div>
+                {/* <div className="mt-4 text-xs font-medium text-[var(--bc-accent)]">
+                  Open intervention →
+                </div> */}
+              </Link>
             ))}
           </div>
         </Card>
@@ -132,10 +142,17 @@ export default function HomePage({ data }: { data: HomeResponse }) {
           <SectionTitle title="Latest resources" subtitle="Document cards for reports and manuals" />
           <div className="space-y-3">
             {data.latest_resources.map((res) => (
-              <div key={res.slug} className="rounded-2xl bg-slate-50 px-4 py-3">
-                <div className="text-sm font-medium">{res.title}</div>
+              <Link
+                key={res.slug}
+                href={`/resources/${res.slug}`}
+                className="block rounded-2xl bg-slate-50 px-4 py-3 transition hover:bg-slate-100"
+              >
+                <div className="text-sm font-medium text-[var(--bc-accent)]">{res.title}</div>
                 <div className="mt-1 text-xs text-slate-500">{res.summary}</div>
-              </div>
+                {/* <div className="mt-2 text-xs font-medium text-[var(--bc-accent)]">
+                  Open resource →
+                </div> */}
+              </Link>
             ))}
           </div>
         </Card>

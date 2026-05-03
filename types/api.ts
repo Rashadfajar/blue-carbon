@@ -81,6 +81,16 @@ export interface SiteListResponse {
   items: SiteListItem[];
 }
 
+export interface TextBlockItem {
+  title: string;
+  description: string;
+}
+export interface SiteLinkItem {
+  label: string;
+  href: string;
+  description?: string;
+}
+
 export interface SiteDetailResponse {
   slug: string;
   title: string;
@@ -91,15 +101,17 @@ export interface SiteDetailResponse {
   sections: {
     site_overview: string;
     pressures_and_risks: RiskItem[];
-    intervention_pathways: string[];
-    mrv_readiness: string[];
-    governance_financing: string[];
+    intervention_pathways: TextBlockItem[];
+    mrv_readiness: TextBlockItem[];
+    governance_financing: TextBlockItem[];
+    downloads_and_links: SiteLinkItem[];
   };
   mini_map?: {
     latitude: number;
     longitude: number;
     zoom: number;
   } | null;
+  
 }
 
 export interface MapLayerItem {
@@ -146,3 +158,36 @@ export interface MapFeatureDetailResponse {
   attributes?: Record<string, unknown>;
   metadata_note?: string | null;
 }
+
+
+export interface ResourceItem {
+  slug: string;
+  title: string;
+  summary: string;
+  category: string;
+  file_url?: string | null;
+  external_url?: string | null;
+  published_date?: string | null;
+}
+
+export interface ResourceListResponse {
+  items: ResourceItem[];
+  pagination: {
+    page?: number;
+    page_size?: number;
+    total_items?: number;
+    total_pages?: number;
+    [key: string]: unknown; 
+  };
+}
+
+export interface ResourceWriteRequest {
+  slug: string;
+  title: string;
+  summary: string;
+  category: string;
+  file_url?: string | null;
+  external_url?: string | null;
+  published_date?: string | null; 
+}
+

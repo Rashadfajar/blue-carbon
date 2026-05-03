@@ -1,6 +1,6 @@
 import { apiFetch } from "@/lib/api";
+import ResourceDetailPage from "@/components/resources/ResourceDetailPage";
 import type { ResourceItem } from "@/types/api";
-import ResourceEditorForm from "@/components/admin/resources/ResourceEditorForm";
 
 export default async function Page({
   params,
@@ -9,5 +9,5 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const data = await apiFetch<ResourceItem>(`/resources/${slug}`);
-  return <ResourceEditorForm mode="edit" initialData={data} />;
+  return <ResourceDetailPage data={data} />;
 }

@@ -1,3 +1,5 @@
+import ResourceEditorForm from "@/components/admin/resources/ResourceEditorForm";
+
 export default function Page() {
-  return <div className="p-6 text-sm text-slate-500">Coming soon</div>;
+  return <ResourceEditorForm mode="create" />;
 }

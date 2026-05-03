@@ -5,7 +5,7 @@ import type { SiteListResponse } from "@/types/api";
 
 export default function SiteListPage({ data }: { data: SiteListResponse }) {
   return (
-    <Shell>
+    <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Site Manager</h1>
@@ -13,7 +13,7 @@ export default function SiteListPage({ data }: { data: SiteListResponse }) {
         </div>
         <Link
           href="/admin/sites/new"
-          className="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white"
+          className="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-medium !text-white shadow"
         >
           New Site
         </Link>
@@ -21,7 +21,7 @@ export default function SiteListPage({ data }: { data: SiteListResponse }) {
 
       <Card>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="bc-table w-full text-left text-sm">
             <thead>
               <tr className="border-b text-slate-500">
                 <th className="px-4 py-3">Title</th>
@@ -39,7 +39,7 @@ export default function SiteListPage({ data }: { data: SiteListResponse }) {
                   <td className="px-4 py-3">
                     <Link
                       href={`/admin/sites/${site.slug}`}
-                      className="rounded-xl border px-3 py-2 text-xs text-slate-700 hover:bg-slate-50"
+                      className="rounded-xl border border-red-200 px-3 py-2 text-xs text-red-700 hover:bg-red-50"
                     >
                       Edit
                     </Link>
@@ -50,6 +50,6 @@ export default function SiteListPage({ data }: { data: SiteListResponse }) {
           </table>
         </div>
       </Card>
-    </Shell>
+    </div>
   );
 }

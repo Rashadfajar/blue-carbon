@@ -6,9 +6,14 @@ export default function SectionTitle({
   subtitle?: string;
 }) {
   return (
-    <div className="mb-4">
-      <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
-      {subtitle ? <p className="mt-1 text-sm text-slate-500">{subtitle}</p> : null}
+    <div className="mb-5">
+      <div className="h-1 w-14 rounded-full bg-[var(--bc-accent)]" />
+      <h2 className="mt-3 text-xl font-semibold tracking-tight text-[var(--bc-primary)]">
+        {title}
+      </h2>
+      {subtitle ? (
+        <p className="mt-1 text-sm leading-6 text-[var(--bc-muted)]">{subtitle}</p>
+      ) : null}
     </div>
   );
 }

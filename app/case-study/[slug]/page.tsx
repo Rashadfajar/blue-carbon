@@ -7,10 +7,9 @@ export default async function Page({
 }: {
   params: { slug: string };
 }) {
-  const { slug } = await params; // ✅ WAJIB di-await
-
+  const { slug } = await params;
   const data = await apiFetch<SiteDetailResponse>(
-    `/sites/${encodeURIComponent(slug)}`
+    `/sites/${slug}`
   );
 
   return <CaseStudyPage data={data} />;
