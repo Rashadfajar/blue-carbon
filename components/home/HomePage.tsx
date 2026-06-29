@@ -54,7 +54,7 @@ export default function HomePage({ data }: { data: HomeResponse }) {
         </Card>
 
         <Card className="bc-card-strong lg:col-span-3">
-          <SectionTitle title="Quick access" subtitle="Primary routes for the first release" />
+          <SectionTitle title="Quick access"/>
           <div className="space-y-3">
             {data.quick_links?.length ? (
               data.quick_links.map((item) => (
@@ -115,7 +115,7 @@ export default function HomePage({ data }: { data: HomeResponse }) {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-12">
         <Card className="lg:col-span-7">
-          <SectionTitle title="Featured interventions" subtitle="Prototype card pattern for the intervention library" />
+          <SectionTitle title="Featured interventions" />
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {data.featured_interventions.map((item) => (
               <Link
@@ -139,7 +139,7 @@ export default function HomePage({ data }: { data: HomeResponse }) {
         </Card>
 
         <Card className="lg:col-span-5">
-          <SectionTitle title="Latest resources" subtitle="Document cards for reports and manuals" />
+          <SectionTitle title="Latest resources" />
           <div className="space-y-3">
             {data.latest_resources.map((res) => (
               <Link

@@ -18,12 +18,24 @@ export interface TextBlockItem {
   title: string;
   description: string;
 }
+export type SiteLinkType = "resource" | "external" | "map";
+
 export interface SiteLinkItem {
+  type?: SiteLinkType;
   label: string;
-  href: string;
+  href?: string;
   description?: string;
+
+  resource_slug?: string;
+  category?: string;
+  file_url?: string | null;
+  external_url?: string | null;
 }
 
+export interface HomeStatItem {
+  label: string;
+  value: string;
+}
 export interface SiteFormData {
   slug: string;
   title: string;
@@ -84,8 +96,34 @@ export interface HomeConfigFormData {
     primary_cta: HomeCtaItem;
     secondary_cta: HomeCtaItem;
   };
+  stats: HomeStatItem[];
   quick_links: HomeCtaItem[];
   featured_intervention_slugs: string[];
   featured_resource_slugs: string[];
 }
 
+export interface OptionItem {
+  label: string;
+  value: string;
+  summary?: string;
+  category?: string;
+  ecosystem?: string;
+  type?: string;
+  objective?: string;
+  project_stage?: string;
+  source_type?: string;
+  file_url?: string | null;
+  external_url?: string | null;
+}
+
+export interface OptionListResponse {
+  items: OptionItem[];
+}
+
+export interface ClassificationOptions {
+  ecosystems: string[];
+  intervention_types: string[];
+  objectives: string[];
+  project_stages: string[];
+  resource_categories: string[];
+}

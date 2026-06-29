@@ -87,7 +87,7 @@ export default function InterventionLibraryClient({ initialData, meta }: Props) 
 
       <div className="grid gap-6 lg:grid-cols-12">
         <Card className="lg:col-span-3">
-          <SectionTitle title="Filters" subtitle="Active API-driven filters" />
+          <SectionTitle title="Filters" />
           <div className="space-y-2 text-sm text-slate-600">
             <div className="rounded-2xl bg-slate-50 p-3">Search: {search || "-"}</div>
             <div className="rounded-2xl bg-slate-50 p-3">Ecosystem: {ecosystem || "-"}</div>

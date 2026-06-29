@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Shell from "@/components/layout/Shell";
+// import Shell from "@/components/layout/Shell";
 import AdminPageHeader from "@/components/admin/shared/AdminPageHeader";
 import FormSection from "@/components/admin/shared/FormSection";
 import TagInput from "@/components/admin/interventions/TagInput";
 import type { InterventionSummary } from "@/types/api";
 import type { InterventionFormData } from "@/types/admin";
+import { useEffect } from "react";
+import { apiFetch } from "@/lib/api";
+import type { ClassificationOptions } from "@/types/admin";
 
 interface InterventionDetailLike extends InterventionSummary {
   description?: string | null;
@@ -23,6 +26,7 @@ export default function InterventionEditorForm({
   initialData,
 }: Props) {
   const router = useRouter();
+  const [options, setOptions] = useState<ClassificationOptions | null>(null);
 
   const [form, setForm] = useState<InterventionFormData>({
     slug: initialData?.slug || "",
@@ -65,6 +69,12 @@ export default function InterventionEditorForm({
     router.push("/admin/interventions");
     router.refresh();
   };
+
+  useEffect(() => {
+    apiFetch<ClassificationOptions>("/admin/options/classifications")
+      .then(setOptions)
+      .catch(() => setOptions(null));
+  }, []);
 
   return (
     <div>
@@ -115,32 +125,43 @@ export default function InterventionEditorForm({
               className="rounded-xl border px-4 py-3"
             >
               <option value="">Select ecosystem</option>
-              <option value="mangrove">mangrove</option>
-              <option value="seagrass">seagrass</option>
+              {(options?.ecosystems || []).map((x) => (
+                <option key={x} value={x}>{x}</option>
+              ))}
             </select>
 
-            <input
+            <select
               value={form.type}
               onChange={(e) => setForm({ ...form, type: e.target.value })}
-              placeholder="Type"
               className="rounded-xl border px-4 py-3"
-            />
+            >
+              <option value="">Select type</option>
+              {(options?.intervention_types || []).map((x) => (
+                <option key={x} value={x}>{x}</option>
+              ))}
+            </select>
 
-            <input
+            <select
               value={form.objective}
               onChange={(e) => setForm({ ...form, objective: e.target.value })}
-              placeholder="Objective"
               className="rounded-xl border px-4 py-3"
-            />
+            >
+              <option value="">Select objective</option>
+              {(options?.objectives || []).map((x) => (
+                <option key={x} value={x}>{x}</option>
+              ))}
+            </select>
 
-            <input
+            <select
               value={form.project_stage}
-              onChange={(e) =>
-                setForm({ ...form, project_stage: e.target.value })
-              }
-              placeholder="Project stage"
+              onChange={(e) => setForm({ ...form, project_stage: e.target.value })}
               className="rounded-xl border px-4 py-3"
-            />
+            >
+              <option value="">Select project stage</option>
+              {(options?.project_stages || []).map((x) => (
+                <option key={x} value={x}>{x}</option>
+              ))}
+            </select>
           </div>
         </FormSection>
 

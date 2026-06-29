@@ -10,9 +10,11 @@ interface LayerRow extends MapLayerItem {
 interface Props {
   layers: LayerRow[];
   onDelete: (slug: string) => Promise<void>;
+  onEdit: (layer: LayerRow) => void;
 }
 
-export default function LayerTable({ layers, onDelete }: Props) {
+
+export default function LayerTable({ layers, onDelete, onEdit }: Props) {
   const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
 
   return (
@@ -39,6 +41,13 @@ export default function LayerTable({ layers, onDelete }: Props) {
               <td className="px-4 py-3 text-slate-500">{layer.is_default_visible ? "Yes" : "No"}</td>
               <td className="px-4 py-3 text-slate-500">{layer.featureCount ?? "-"}</td>
               <td className="px-4 py-3">
+                <button
+                  type="button"
+                  onClick={() => onEdit(layer)}
+                  className="mr-2 rounded-xl border px-3 py-2 text-xs text-slate-700 hover:bg-slate-50"
+                >
+                  Edit
+                </button>
                 <button
                   type="button"
                   disabled={deletingSlug === layer.slug}

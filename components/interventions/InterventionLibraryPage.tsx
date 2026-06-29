@@ -27,7 +27,7 @@ export default function InterventionLibraryPage({ data }: { data: InterventionLi
 
       <div className="grid gap-6 lg:grid-cols-12">
         <Card className="lg:col-span-3">
-          <SectionTitle title="Filters" subtitle="Dynamic filter metadata can be added next" />
+          <SectionTitle title="Filters" />
           <div className="space-y-3 text-sm text-slate-600">
             {["Mangrove", "Seagrass", "Protection", "Restoration", "Rehabilitation", "Community-based", "Governance", "Financing"].map((item) => (
               <label key={item} className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3">

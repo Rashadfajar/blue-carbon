@@ -122,6 +122,12 @@ export interface MapLayerItem {
   is_default_visible: boolean;
   source_type: string;
   source_url?: string | null;
+
+  fill_color: string;
+  fill_opacity: number;
+  stroke_color: string;
+  stroke_opacity: number;
+  stroke_weight: number;
 }
 
 export interface MapLayerListResponse {

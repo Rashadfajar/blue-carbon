@@ -97,11 +97,11 @@ export default function Header() {
           </div>
 
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--bc-accent)]">
-              KKP / Blue Carbon
-            </div>
-            <div className="text-sm font-semibold text-[var(--bc-primary)]">
+            <div className="text-sm font-semibold text-[var(--bc-accent)]">
               Blue Carbon Portal
+            </div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--bc-primary)]">
+              KEMENTERIAN KELAUTAN DAN PERIKANAN REPUBLIK INDONESIA
             </div>
           </div>
         </Link>
@@ -241,13 +241,16 @@ export default function Header() {
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--bc-border)] text-slate-700 transition hover:bg-slate-100 md:hidden"
-          aria-label="Open menu"
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? (
-            <span className="text-2xl leading-none">×</span>
+            <span className="relative block h-5 w-5">
+              <span className="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded bg-slate-700" />
+              <span className="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded bg-slate-700" />
+            </span>
           ) : (
-            <span className="space-y-1.5">
+            <span className="flex flex-col gap-1.5">
               <span className="block h-0.5 w-5 rounded bg-slate-700" />
               <span className="block h-0.5 w-5 rounded bg-slate-700" />
               <span className="block h-0.5 w-5 rounded bg-slate-700" />

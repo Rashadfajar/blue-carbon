@@ -150,3 +150,53 @@ img {
 .bc-table tbody tr:hover {
   background: #f9fcfd;
 }
+
+/* Leaflet control visibility fix */
+.leaflet-container {
+  z-index: 0;
+}
+
+.leaflet-control-container {
+  position: relative;
+  z-index: 1000;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1000 !important;
+}
+
+.leaflet-control {
+  z-index: 1000 !important;
+}
+
+.leaflet-control-zoom {
+  overflow: hidden;
+  border: 1px solid var(--bc-border) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18) !important;
+}
+
+.leaflet-control-zoom a {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 34px !important;
+  height: 34px !important;
+  background: #ffffff !important;
+  color: var(--bc-primary) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  border: none !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: rgba(218, 218, 218, 0.978) !important;
+  color: var(--bc-accent) !important;
+}
+
+.leaflet-control-zoom-in {
+  border-bottom: 1px solid var(--bc-border) !important;
+}

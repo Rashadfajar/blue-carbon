@@ -1,6 +1,8 @@
 "use client";
 
-import type { SiteLinkItem } from "@/types/admin";
+import { useEffect, useState } from "react";
+import { apiFetch } from "@/lib/api";
+import type { OptionItem, OptionListResponse, SiteLinkItem } from "@/types/admin";
 
 interface Props {
   value: SiteLinkItem[];
@@ -8,18 +10,30 @@ interface Props {
 }
 
 export default function LinkRows({ value, onChange }: Props) {
-  const updateItem = (
-    index: number,
-    field: keyof SiteLinkItem,
-    fieldValue: string
-  ) => {
+  const [resources, setResources] = useState<OptionItem[]>([]);
+
+  useEffect(() => {
+    apiFetch<OptionListResponse>("/admin/options/resources")
+      .then((res) => setResources(res.items))
+      .catch(() => setResources([]));
+  }, []);
+
+  const updateItem = (index: number, next: Partial<SiteLinkItem>) => {
     const updated = [...value];
-    updated[index] = { ...updated[index], [field]: fieldValue };
+    updated[index] = { ...updated[index], ...next };
     onChange(updated);
   };
 
   const addItem = () => {
-    onChange([...value, { label: "", href: "", description: "" }]);
+    const newItem: SiteLinkItem = {
+      type: "resource",
+      label: "",
+      description: "",
+      resource_slug: "",
+      href: "",
+    };
+
+    onChange([...value, newItem]);
   };
 
   const removeItem = (index: number) => {
@@ -30,25 +44,88 @@ export default function LinkRows({ value, onChange }: Props) {
     <div className="space-y-4">
       {value.map((item, index) => (
         <div key={index} className="space-y-3 rounded-2xl border p-4">
-          <input
-            value={item.label}
-            onChange={(e) => updateItem(index, "label", e.target.value)}
-            placeholder="Link label, e.g. FS Mangrove Belitung Timur"
+          <select
+            value={item.type || "resource"}
+            onChange={(e) =>
+              updateItem(index, {
+                type: e.target.value as SiteLinkItem["type"],
+              })
+            }
             className="w-full rounded-xl border px-4 py-3"
-          />
-          <input
-            value={item.href}
-            onChange={(e) => updateItem(index, "href", e.target.value)}
-            placeholder="/resources/fs-mangrove-belitung-timur or external URL"
-            className="w-full rounded-xl border px-4 py-3"
-          />
-          <textarea
-            value={item.description || ""}
-            onChange={(e) => updateItem(index, "description", e.target.value)}
-            placeholder="Short description"
-            className="w-full rounded-xl border px-4 py-3"
-            rows={2}
-          />
+          >
+            <option value="resource">Resource from Resource Manager</option>
+            <option value="external">External Link</option>
+            <option value="map">Map Link</option>
+          </select>
+
+          {item.type === "resource" || !item.type ? (
+            <>
+              <select
+                value={item.resource_slug || ""}
+                onChange={(e) => {
+                  const selected = resources.find((x) => x.value === e.target.value);
+                  updateItem(index, {
+                    resource_slug: e.target.value,
+                    label: selected?.label || item.label,
+                    description: selected?.summary || item.description,
+                    href: e.target.value ? `/resources/${e.target.value}` : "",
+                  });
+                }}
+                className="w-full rounded-xl border px-4 py-3"
+              >
+                <option value="">Select resource</option>
+                {resources.map((res) => (
+                  <option key={res.value} value={res.value}>
+                    {res.label}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                value={item.label}
+                onChange={(e) => updateItem(index, { label: e.target.value })}
+                placeholder="Display label"
+                className="w-full rounded-xl border px-4 py-3"
+              />
+
+              <textarea
+                value={item.description || ""}
+                onChange={(e) => updateItem(index, { description: e.target.value })}
+                placeholder="Short description"
+                className="w-full rounded-xl border px-4 py-3"
+                rows={2}
+              />
+            </>
+          ) : null}
+
+          {item.type === "external" ? (
+            <>
+              <input
+                value={item.label}
+                onChange={(e) => updateItem(index, { label: e.target.value })}
+                placeholder="External link label"
+                className="w-full rounded-xl border px-4 py-3"
+              />
+              <input
+                value={item.external_url || ""}
+                onChange={(e) =>
+                  updateItem(index, {
+                    external_url: e.target.value,
+                    href: e.target.value,
+                  })
+                }
+                placeholder="https://..."
+                className="w-full rounded-xl border px-4 py-3"
+              />
+            </>
+          ) : null}
+
+          {item.type === "map" ? (
+            <div className="rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
+              Map link will be generated automatically from the site slug.
+            </div>
+          ) : null}
+
           <button
             type="button"
             onClick={() => removeItem(index)}

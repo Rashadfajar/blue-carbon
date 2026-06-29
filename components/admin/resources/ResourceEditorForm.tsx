@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Shell from "@/components/layout/Shell";
+// import Shell from "@/components/layout/Shell";
 import AdminPageHeader from "@/components/admin/shared/AdminPageHeader";
 import FormSection from "@/components/admin/shared/FormSection";
 import ResourceFileUpload from "@/components/admin/resources/ResourceFileUpload";
 import type { ResourceItem } from "@/types/api";
 import type { ResourceFormData } from "@/types/admin";
-
+import { useEffect } from "react";
+import { apiFetch } from "@/lib/api";
+import type { ClassificationOptions } from "@/types/admin";
 interface Props {
   mode: "create" | "edit";
   initialData?: ResourceItem;
@@ -16,6 +18,7 @@ interface Props {
 
 export default function ResourceEditorForm({ mode, initialData }: Props) {
   const router = useRouter();
+  const [options, setOptions] = useState<ClassificationOptions | null>(null);
 
   const [form, setForm] = useState<ResourceFormData>({
     slug: initialData?.slug || "",
@@ -59,6 +62,12 @@ export default function ResourceEditorForm({ mode, initialData }: Props) {
     router.refresh();
   };
 
+  useEffect(() => {
+    apiFetch<ClassificationOptions>("/admin/options/classifications")
+      .then(setOptions)
+      .catch(() => setOptions(null));
+  }, []);
+
   return (
     <div>
       <AdminPageHeader
@@ -83,12 +92,16 @@ export default function ResourceEditorForm({ mode, initialData }: Props) {
               placeholder="Title"
               className="rounded-xl border px-4 py-3"
             />
-            <input
+            <select
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
-              placeholder="Category"
               className="rounded-xl border px-4 py-3"
-            />
+            >
+              <option value="">Select category</option>
+              {(options?.resource_categories || []).map((x) => (
+                <option key={x} value={x}>{x}</option>
+              ))}
+            </select>
             <input
               type="date"
               value={form.published_date}

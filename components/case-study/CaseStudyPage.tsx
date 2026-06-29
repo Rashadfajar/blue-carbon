@@ -8,6 +8,20 @@ import Link from "next/link";
 import ExpandableList from "@/components/case-study/ExpandableList";
 
 export default function CaseStudyPage({ data }: { data: SiteDetailResponse }) {
+  const mediaBase = (
+    process.env.NEXT_PUBLIC_API_ROOT || "http://127.0.0.1:8000"
+  ).replace(/\/$/, "");
+
+  const heroImageSrc = data.hero_image_url
+    ? data.hero_image_url.startsWith("http")
+      ? data.hero_image_url
+      : `${mediaBase}${
+          data.hero_image_url.startsWith("/")
+            ? data.hero_image_url
+            : `/${data.hero_image_url}`
+        }`
+    : "";
+
   return (
     <Shell>
       <div className="mb-6">
@@ -20,14 +34,15 @@ export default function CaseStudyPage({ data }: { data: SiteDetailResponse }) {
         <div className="space-y-6 lg:col-span-8">
           <Card className="bc-card-strong p-4">
             <div className="relative aspect-[6/3] overflow-hidden rounded-[24px] border border-slate-200 bg-slate-100">
-              {data.hero_image_url ? (
+              {heroImageSrc ? (
                 <Image
-                  src={data.hero_image_url}
+                  src={heroImageSrc}
                   alt={data.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 60vw"
                   className="object-cover"
                   priority
+                  unoptimized
                 />
               ) : (
                 <div className="flex h-full items-center justify-center text-sm text-slate-500">
